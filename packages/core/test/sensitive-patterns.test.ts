@@ -17,6 +17,11 @@ describe("value patterns", () => {
     expect(categories(["Take 2 tablets 500 mg"])).toEqual([]);
     expect(categories(["LOT A12B"])).toEqual([]);
   });
+
+  it("does not treat date-shaped tokens as identifiers", () => {
+    expect(categories(["Best before 2027-09"])).toEqual([]);
+    expect(categories(["Issued 2026-11-06"])).toEqual([]);
+  });
 });
 
 describe("field labels", () => {
@@ -29,6 +34,11 @@ describe("field labels", () => {
 
   it("does not treat product or brand names as personal names", () => {
     expect(categories(["Product name: Paracetamol"])).toEqual([]);
+  });
+
+  it("does not treat a customer-care line as a name field", () => {
+    expect(categories(["Customer care line"])).toEqual([]);
+    expect(categories(["Customer name: Pat Example"])).toEqual(["person_name"]);
   });
 
   it("continues an address onto following lines until another label", () => {

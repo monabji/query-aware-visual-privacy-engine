@@ -43,7 +43,7 @@ type FieldLabel = {
 };
 
 const FIELD_LABELS: readonly FieldLabel[] = [
-  { category: "person_name", pattern: /\b(?:patient(?:\s+name)?|(?<!(?:product|brand|generic|drug|trade)\s)name|prescribed\s+for|customer|insured)\b\s*[:\-]?/i, continuationLines: 0 },
+  { category: "person_name", pattern: /\b(?:patient(?:\s+name)?|(?<!(?:product|brand|generic|drug|trade)\s)name|prescribed\s+for|customer\s+name|insured)\b\s*[:\-]?/i, continuationLines: 0 },
   { category: "postal_address", pattern: /\b(?:address|addr\.?)\b\s*[:\-]?/i, continuationLines: 2 },
   { category: "date_of_birth", pattern: /\b(?:dob|d\.o\.b\.?|date\s+of\s+birth|born)\b\s*[:\-]?/i, continuationLines: 0 },
   { category: "phone_number", pattern: /\b(?:tel|phone|mobile|ph)\b\.?\s*[:\-]?/i, continuationLines: 0 },
@@ -60,6 +60,9 @@ function digitsIn(text: string): number {
   return (text.match(/\d/g) ?? []).length;
 }
 
+/** Date-shaped tokens (e.g. 2027-09, 2026-11-06) are handled as dates, not identifiers. */
+const DATE_TOKEN = /^(?:\d{4}-\d{1,2}(?:-\d{1,2})?|\d{1,2}-\d{1,2}-\d{2,4})$/;
+
 function valueMatches(line: OcrLine, lineIndex: number): SensitiveTextMatch[] {
   const text = lineText(line);
   const matches: SensitiveTextMatch[] = [];
@@ -68,6 +71,7 @@ function valueMatches(line: OcrLine, lineIndex: number): SensitiveTextMatch[] {
       const start = match.index;
       const value = match[0];
       if (category === "phone_number" && digitsIn(value) < 9) continue;
+      if (category === "identifier_number" && DATE_TOKEN.test(value)) continue;
       const wordIndices = wordsInSpan(line, start, start + value.length);
       if (wordIndices.length > 0) {
         matches.push({ category, lineIndex, wordIndices, mechanism: "value_pattern" });
