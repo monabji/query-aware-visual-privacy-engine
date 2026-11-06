@@ -13,6 +13,7 @@ export type Canvas2D = {
   fillRect(x: number, y: number, width: number, height: number): void;
   fillText(text: string, x: number, y: number): void;
   measureText(text: string): {
+    width: number;
     actualBoundingBoxLeft: number;
     actualBoundingBoxRight: number;
     actualBoundingBoxAscent: number;
@@ -42,22 +43,34 @@ function renderPanel(ctx: Canvas2D, panel: PanelSpec): ElementAnnotation[] {
   ctx.fillRect(panel.x, panel.y, panel.width, panel.height);
 
   const annotations: ElementAnnotation[] = [];
-  for (const element of panel.elements) {
-    ctx.font = `${element.fontWeight ?? "normal"} ${element.fontSize}px ${PILOT_FONT_FAMILY}`;
-    ctx.textBaseline = "alphabetic";
-    ctx.fillStyle = element.color ?? "#1b1b1b";
-    ctx.fillText(element.text, element.x, element.y);
-    const metrics = ctx.measureText(element.text);
-    const left = element.x - metrics.actualBoundingBoxLeft;
-    const right = element.x + metrics.actualBoundingBoxRight;
-    const top = element.y - metrics.actualBoundingBoxAscent;
-    const bottom = element.y + metrics.actualBoundingBoxDescent;
+  const drawRun = (text: string, x: number, y: number): Polygon => {
+    ctx.fillText(text, x, y);
+    const metrics = ctx.measureText(text);
+    const left = x - metrics.actualBoundingBoxLeft;
+    const right = x + metrics.actualBoundingBoxRight;
+    const top = y - metrics.actualBoundingBoxAscent;
+    const bottom = y + metrics.actualBoundingBoxDescent;
     const polygon: Polygon = [
       { x: left, y: top },
       { x: right, y: top },
       { x: right, y: bottom },
       { x: left, y: bottom },
     ].map((corner) => rotateAbout(corner, centre, radians));
+    return polygon;
+  };
+
+  for (const element of panel.elements) {
+    ctx.font = `${element.fontWeight ?? "normal"} ${element.fontSize}px ${PILOT_FONT_FAMILY}`;
+    ctx.textBaseline = "alphabetic";
+    ctx.fillStyle = element.color ?? "#1b1b1b";
+    let x = element.x;
+    if (element.prefix) {
+      const polygon = drawRun(element.prefix.text, x, element.y);
+      annotations.push({ elementId: `${element.id}-prefix`, role: element.prefix.role, polygon });
+      // Advance past the prefix plus one space, measured in the current font.
+      x += ctx.measureText(`${element.prefix.text} `).width;
+    }
+    const polygon = drawRun(element.text, x, element.y);
     annotations.push({
       elementId: element.id,
       role: element.role,

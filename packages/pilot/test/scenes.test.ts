@@ -71,6 +71,7 @@ describe("renderScene", () => {
       fillRect() {},
       fillText() {},
       measureText: (text: string) => ({
+        width: text.length * 10,
         actualBoundingBoxLeft: 0,
         actualBoundingBoxRight: text.length * 10,
         actualBoundingBoxAscent: 20,
@@ -79,12 +80,14 @@ describe("renderScene", () => {
     };
   }
 
-  it("emits one annotation per element with measured bounds", () => {
+  it("emits annotations for values and prefixes with measured bounds", () => {
     const scene = PILOT_SCENES[0]!;
     const rendered = renderScene(fakeContext(), scene);
-    expect(rendered.annotations).toHaveLength(scene.panels.flatMap((p) => p.elements).length);
-    const product = rendered.annotations.find((a) => a.elementId === "product");
-    expect(product?.polygon[0]).toEqual({ x: 90, y: 100 });
+    const elements = scene.panels.flatMap((p) => p.elements);
+    expect(rendered.annotations).toHaveLength(elements.length + elements.filter((e) => e.prefix).length);
+    // "PARAMOL" prefix at x=90, then "PARAMOL " advance (8 chars * 10) for the value.
+    expect(rendered.annotations.find((a) => a.elementId === "strength-prefix")?.polygon[0]).toEqual({ x: 90, y: 100 });
+    expect(rendered.annotations.find((a) => a.elementId === "strength")?.polygon[0]).toEqual({ x: 170, y: 100 });
   });
 
   it("rotates polygons of rotated panels about the panel centre", () => {

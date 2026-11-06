@@ -12,6 +12,12 @@ export type ElementRole = "sensitive" | "evidence" | "benign";
 
 export type TextElementSpec = {
   readonly id: string;
+  /**
+   * Optional leading text on the same line, annotated separately as
+   * `${id}-prefix` (e.g. the field label "Patient:" before a name). Lets a
+   * line carry a benign label and a sensitive value with exact geometry.
+   */
+  readonly prefix?: { readonly text: string; readonly role: ElementRole };
   readonly text: string;
   readonly x: number;
   readonly y: number;
