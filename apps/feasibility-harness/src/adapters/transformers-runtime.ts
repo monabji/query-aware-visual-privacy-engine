@@ -11,6 +11,14 @@ export function configureTransformers(): void {
   env.allowLocalModels = false;
   env.allowRemoteModels = true;
   env.useBrowserCache = true;
+  const onnx = env.backends.onnx;
+  if (onnx.wasm) {
+    // Serve the ONNX Runtime WASM build from this origin instead of a CDN.
+    onnx.wasm.wasmPaths = {
+      mjs: new URL("/vendor/onnxruntime-web/ort-wasm-simd-threaded.asyncify.mjs", location.href).href,
+      wasm: new URL("/vendor/onnxruntime-web/ort-wasm-simd-threaded.asyncify.wasm", location.href).href,
+    };
+  }
   configured = true;
 }
 

@@ -15,10 +15,17 @@ const VENDOR_DIRS: Record<string, string> = {
   "tesseract-worker": join(packageDir("tesseract.js"), "dist"),
   "tesseract-core": packageDir("tesseract.js-core"),
   "mediapipe-wasm": join(packageDir("@mediapipe/tasks-vision"), "wasm"),
+  "onnxruntime-web": join(packageDir("onnxruntime-web"), "dist"),
+};
+
+/** Only the runtime files the harness loads are emitted for onnxruntime-web. */
+const VENDOR_FILTER: Record<string, RegExp> = {
+  "onnxruntime-web": /^ort-wasm-simd-threaded\.asyncify\.(mjs|wasm)$/,
 };
 
 const MIME: Record<string, string> = {
   ".js": "text/javascript",
+  ".mjs": "text/javascript",
   ".wasm": "application/wasm",
   ".map": "application/json",
 };
@@ -40,7 +47,8 @@ function vendorAssets(): Plugin {
     generateBundle() {
       for (const [prefix, root] of Object.entries(VENDOR_DIRS)) {
         for (const name of readdirSync(root)) {
-          if (![".js", ".wasm"].includes(extname(name))) continue;
+          if (![".js", ".mjs", ".wasm"].includes(extname(name))) continue;
+          if (VENDOR_FILTER[prefix] && !VENDOR_FILTER[prefix].test(name)) continue;
           this.emitFile({ type: "asset", fileName: `vendor/${prefix}/${name}`, source: readFileSync(join(root, name)) });
         }
       }
@@ -50,7 +58,16 @@ function vendorAssets(): Plugin {
 
 export default defineConfig({
   plugins: [vendorAssets()],
-  server: { port: 5173, strictPort: true },
+  server: {
+    port: 5173,
+    strictPort: true,
+    // Cross-origin isolation enables multi-threaded WASM and
+    // performance.measureUserAgentSpecificMemory() for memory measurement.
+    headers: {
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Embedder-Policy": "require-corp",
+    },
+  },
   build: { target: "es2022" },
   worker: { format: "es" },
 });
