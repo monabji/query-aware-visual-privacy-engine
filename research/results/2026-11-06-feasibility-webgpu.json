@@ -1,0 +1,545 @@
+{
+  "reportVersion": "feasibility-report@1",
+  "generatedAt": "2026-11-06T10:24:52.898Z",
+  "harnessRevision": "2ddfa62",
+  "preferredBackend": "webgpu",
+  "environment": {
+    "platform": "Windows",
+    "hardwareConcurrency": 12,
+    "deviceMemoryGb": 16,
+    "crossOriginIsolated": true,
+    "webGpu": {
+      "available": true,
+      "vendor": "intel",
+      "architecture": "gen-12lp"
+    },
+    "wasmSimd": true,
+    "sharedArrayBuffer": true,
+    "browserEngine": "Chromium 152.0.7977.167 (embedded desktop browser, Windows 11)"
+  },
+  "adapters": [
+    {
+      "info": {
+        "stage": "ocr",
+        "id": "tesseract-js",
+        "model": "tesseract eng LSTM (4.0.0_best_int)",
+        "revision": "tesseract.js@7.0.0; tesseract.js-core@7.0.0; @tesseract.js-data/eng@4.0.0_best_int",
+        "runtime": "Tesseract compiled to WebAssembly, in a dedicated worker",
+        "license": "Apache-2.0 (engine and eng traineddata)",
+        "assetHosts": [
+          "cdn.jsdelivr.net"
+        ]
+      },
+      "status": "loaded",
+      "load": {
+        "backend": "wasm",
+        "loadMs": 212.03999996185303
+      }
+    },
+    {
+      "info": {
+        "stage": "sensitive_text",
+        "id": "bert-base-ner",
+        "model": "Xenova/bert-base-NER",
+        "revision": "8e892123e8b7c2c0c2bd1dcb598b7d244c4e53aa",
+        "runtime": "Transformers.js 4.3.1 / ONNX Runtime Web",
+        "license": "MIT",
+        "assetHosts": [
+          "huggingface.co",
+          "*.hf.co"
+        ]
+      },
+      "status": "loaded",
+      "load": {
+        "backend": "webgpu",
+        "loadMs": 189869.310000062
+      }
+    },
+    {
+      "info": {
+        "stage": "face_detection",
+        "id": "mediapipe-blazeface-short-range",
+        "model": "BlazeFace short-range (float16)",
+        "revision": "@mediapipe/tasks-vision@1.1.1; model path version 1",
+        "runtime": "MediaPipe Tasks Vision (WebAssembly; GPU or CPU delegate)",
+        "license": "Apache-2.0",
+        "assetHosts": [
+          "storage.googleapis.com"
+        ]
+      },
+      "status": "loaded",
+      "load": {
+        "backend": "gpu-delegate",
+        "loadMs": 309.05999994277954
+      }
+    }
+  ],
+  "timings": [
+    {
+      "stage": "ocr",
+      "adapterId": "tesseract-js",
+      "firstRunMs": 291.3949999809265,
+      "warm": {
+        "count": 14,
+        "minMs": 141.95499992370605,
+        "p50Ms": 200.0900000333786,
+        "p95Ms": 255.38999998569489,
+        "maxMs": 255.38999998569489
+      }
+    },
+    {
+      "stage": "sensitive_text",
+      "adapterId": "sensitive-patterns@1",
+      "firstRunMs": 0.4650000333786011,
+      "warm": {
+        "count": 14,
+        "minMs": 0.039999961853027344,
+        "p50Ms": 0.06499993801116943,
+        "p95Ms": 0.309999942779541,
+        "maxMs": 0.309999942779541
+      }
+    },
+    {
+      "stage": "sensitive_text",
+      "adapterId": "bert-base-ner",
+      "firstRunMs": 1863.1749999523163,
+      "warm": {
+        "count": 14,
+        "minMs": 143.00999999046326,
+        "p50Ms": 278.0900000333786,
+        "p95Ms": 498.93500006198883,
+        "maxMs": 498.93500006198883
+      }
+    },
+    {
+      "stage": "face_detection",
+      "adapterId": "mediapipe-blazeface-short-range",
+      "firstRunMs": 172.83500003814697,
+      "warm": {
+        "count": 14,
+        "minMs": 36.455000042915344,
+        "p50Ms": 43.5900000333786,
+        "p95Ms": 49.394999980926514,
+        "maxMs": 49.394999980926514
+      }
+    },
+    {
+      "stage": "encode",
+      "adapterId": "canvas-opaque-fill",
+      "firstRunMs": 0.29499995708465576,
+      "warm": {
+        "count": 4,
+        "minMs": 0.17499995231628418,
+        "p50Ms": 0.3450000286102295,
+        "p95Ms": 0.7099999189376831,
+        "maxMs": 0.7099999189376831
+      }
+    },
+    {
+      "stage": "encode",
+      "adapterId": "canvas-png",
+      "firstRunMs": 39.25499999523163,
+      "warm": {
+        "count": 4,
+        "minMs": 28.644999980926514,
+        "p50Ms": 29.18999993801117,
+        "p95Ms": 44.97500002384186,
+        "maxMs": 44.97500002384186
+      }
+    },
+    {
+      "stage": "output_check",
+      "adapterId": "artifact-check@1",
+      "firstRunMs": 10.545000076293945,
+      "warm": {
+        "count": 4,
+        "minMs": 13.09500002861023,
+        "p50Ms": 15.055000066757202,
+        "p95Ms": 18.330000042915344,
+        "maxMs": 18.330000042915344
+      }
+    }
+  ],
+  "pilot": {
+    "scenesVersion": "pilot-scenes@2",
+    "repeats": 3,
+    "scenes": [
+      {
+        "sceneId": "carton-with-pharmacy-sticker",
+        "tags": [
+          "separate-regions",
+          "multi-category"
+        ],
+        "sensitiveTotal": 5,
+        "sensitiveCovered": 5,
+        "sensitiveByCategory": {
+          "person_name": {
+            "total": 1,
+            "covered": 1
+          },
+          "postal_address": {
+            "total": 2,
+            "covered": 2
+          },
+          "phone_number": {
+            "total": 1,
+            "covered": 1
+          },
+          "identifier_number": {
+            "total": 1,
+            "covered": 1
+          }
+        },
+        "evidenceTotal": 5,
+        "evidenceDamaged": 0,
+        "benignTotal": 5,
+        "benignOverRedacted": 0,
+        "falsePositiveFaces": 0,
+        "questions": [
+          {
+            "questionId": "q-expiry",
+            "intentCorrect": true,
+            "expectedTarget": "expiry_date",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-batch",
+            "intentCorrect": true,
+            "expectedTarget": "batch_number",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-strength",
+            "intentCorrect": true,
+            "expectedTarget": "strength",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          }
+        ]
+      },
+      {
+        "sceneId": "label-expiry-beside-name",
+        "tags": [
+          "same-line-conflict",
+          "relevant-and-sensitive-overlap"
+        ],
+        "sensitiveTotal": 2,
+        "sensitiveCovered": 2,
+        "sensitiveByCategory": {
+          "person_name": {
+            "total": 1,
+            "covered": 1
+          },
+          "email_address": {
+            "total": 1,
+            "covered": 1
+          }
+        },
+        "evidenceTotal": 3,
+        "evidenceDamaged": 1,
+        "benignTotal": 3,
+        "benignOverRedacted": 0,
+        "falsePositiveFaces": 0,
+        "questions": [
+          {
+            "questionId": "q-useby",
+            "intentCorrect": true,
+            "expectedTarget": "expiry_date",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 1,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-strength",
+            "intentCorrect": true,
+            "expectedTarget": "strength",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-who",
+            "intentCorrect": true,
+            "expectedTarget": null,
+            "groundedRegionCount": 0,
+            "evidenceGrounded": null,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 1,
+            "visualGroundingCovers": null
+          }
+        ]
+      },
+      {
+        "sceneId": "package-benign-contact",
+        "tags": [
+          "no-personal-data",
+          "over-redaction-probe"
+        ],
+        "sensitiveTotal": 0,
+        "sensitiveCovered": 0,
+        "sensitiveByCategory": {},
+        "evidenceTotal": 4,
+        "evidenceDamaged": 0,
+        "benignTotal": 2,
+        "benignOverRedacted": 1,
+        "falsePositiveFaces": 0,
+        "questions": [
+          {
+            "questionId": "q-best",
+            "intentCorrect": true,
+            "expectedTarget": "expiry_date",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-lot",
+            "intentCorrect": true,
+            "expectedTarget": "batch_number",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          }
+        ]
+      },
+      {
+        "sceneId": "letter-no-answer",
+        "tags": [
+          "unanswerable",
+          "document",
+          "small-text"
+        ],
+        "sensitiveTotal": 5,
+        "sensitiveCovered": 5,
+        "sensitiveByCategory": {
+          "person_name": {
+            "total": 1,
+            "covered": 1
+          },
+          "date_of_birth": {
+            "total": 1,
+            "covered": 1
+          },
+          "identifier_number": {
+            "total": 2,
+            "covered": 2
+          },
+          "phone_number": {
+            "total": 1,
+            "covered": 1
+          }
+        },
+        "evidenceTotal": 0,
+        "evidenceDamaged": 0,
+        "benignTotal": 8,
+        "benignOverRedacted": 0,
+        "falsePositiveFaces": 0,
+        "questions": [
+          {
+            "questionId": "q-expiry-absent",
+            "intentCorrect": true,
+            "expectedTarget": "expiry_date",
+            "groundedRegionCount": 0,
+            "evidenceGrounded": null,
+            "correctlyEmpty": true,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-unsupported",
+            "intentCorrect": true,
+            "expectedTarget": null,
+            "groundedRegionCount": 0,
+            "evidenceGrounded": null,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          }
+        ]
+      },
+      {
+        "sceneId": "rotated-sticker",
+        "tags": [
+          "rotation",
+          "separate-regions"
+        ],
+        "sensitiveTotal": 3,
+        "sensitiveCovered": 1,
+        "sensitiveByCategory": {
+          "person_name": {
+            "total": 1,
+            "covered": 0
+          },
+          "phone_number": {
+            "total": 1,
+            "covered": 1
+          },
+          "postal_address": {
+            "total": 1,
+            "covered": 0
+          }
+        },
+        "evidenceTotal": 3,
+        "evidenceDamaged": 0,
+        "benignTotal": 3,
+        "benignOverRedacted": 0,
+        "falsePositiveFaces": 0,
+        "questions": [
+          {
+            "questionId": "q-expiry",
+            "intentCorrect": true,
+            "expectedTarget": "expiry_date",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-strength",
+            "intentCorrect": true,
+            "expectedTarget": "strength",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          }
+        ]
+      }
+    ],
+    "artifactChecks": [
+      {
+        "formatIsPng": true,
+        "dimensionsMatch": true,
+        "unexpectedChunks": [],
+        "failingMaskBoxes": 0,
+        "nonOpaquePixels": 0,
+        "passed": true,
+        "sceneId": "carton-with-pharmacy-sticker",
+        "residualSensitiveFindings": 0,
+        "maskedAreaFraction": 0.03727864583333333
+      },
+      {
+        "formatIsPng": true,
+        "dimensionsMatch": true,
+        "unexpectedChunks": [],
+        "failingMaskBoxes": 0,
+        "nonOpaquePixels": 0,
+        "passed": true,
+        "sceneId": "label-expiry-beside-name",
+        "residualSensitiveFindings": 0,
+        "maskedAreaFraction": 0.05348
+      },
+      {
+        "formatIsPng": true,
+        "dimensionsMatch": true,
+        "unexpectedChunks": [],
+        "failingMaskBoxes": 0,
+        "nonOpaquePixels": 0,
+        "passed": true,
+        "sceneId": "package-benign-contact",
+        "residualSensitiveFindings": 0,
+        "maskedAreaFraction": 0.006591269841269841
+      },
+      {
+        "formatIsPng": true,
+        "dimensionsMatch": true,
+        "unexpectedChunks": [],
+        "failingMaskBoxes": 0,
+        "nonOpaquePixels": 0,
+        "passed": true,
+        "sceneId": "letter-no-answer",
+        "residualSensitiveFindings": 0,
+        "maskedAreaFraction": 0.014940379403794038
+      },
+      {
+        "formatIsPng": true,
+        "dimensionsMatch": true,
+        "unexpectedChunks": [],
+        "failingMaskBoxes": 0,
+        "nonOpaquePixels": 0,
+        "passed": true,
+        "sceneId": "rotated-sticker",
+        "residualSensitiveFindings": 0,
+        "maskedAreaFraction": 0.024744466145833335
+      }
+    ]
+  },
+  "memory": [
+    {
+      "bytes": 23716006,
+      "method": "performance.memory",
+      "at": "before-load"
+    },
+    {
+      "bytes": 720231776,
+      "method": "performance.memory",
+      "at": "after-pilot"
+    }
+  ],
+  "network": {
+    "resources": [
+      {
+        "host": "self",
+        "requests": 40,
+        "transferBytes": 13976157,
+        "decodedBytes": 19228174,
+        "allowed": true
+      },
+      {
+        "host": "huggingface.co",
+        "requests": 8,
+        "transferBytes": 0,
+        "decodedBytes": 0,
+        "allowed": true
+      },
+      {
+        "host": "storage.googleapis.com",
+        "requests": 1,
+        "transferBytes": 0,
+        "decodedBytes": 0,
+        "allowed": true
+      }
+    ],
+    "blockedRequests": [],
+    "cspViolations": []
+  },
+  "notes": [
+    "Dev-server build define captured an earlier commit; the code that ran matches commit 2ddfa62 (no harness source changes after 3614d05).",
+    "Synthetic pilot only (pilot-scenes@2). Browser pane visible.",
+    "CONFOUND: the OWL-ViT fp32 download (612 MB) and session attempt ran concurrently with this pilot, so WebGPU timings may be inflated. OWL-ViT on WebGPU failed in an earlier fresh-page run with the same error recorded in the results summary.",
+    "bert-base-ner fp32 (431 MB) was not retained in the browser cache between page loads, so every WebGPU cold load re-downloads it."
+  ]
+}
