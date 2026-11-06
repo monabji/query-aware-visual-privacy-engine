@@ -12,7 +12,7 @@ The user chose a web app and may add phone and desktop wrappers later. A desktop
 
 All supporting Markdown files belong in the `docs/` folder. Keep this root `AGENTS.md` as the entry point and refer to that folder for the full project instructions.
 
-Read [README.md](docs/README.md), [phases.md](docs/phases.md), [PRODUCT_SPEC.md](docs/PRODUCT_SPEC.md), [ARCHITECTURE.md](docs/ARCHITECTURE.md), and [PRIVACY_AND_SAFETY.md](docs/PRIVACY_AND_SAFETY.md) before implementation. Read [RESEARCH_PLAN.md](docs/RESEARCH_PLAN.md) and [MODEL_AND_EVALUATION.md](docs/MODEL_AND_EVALUATION.md) before selecting models, thresholds, datasets, or publishing claims. Consult [DECISIONS.md](docs/DECISIONS.md) for accepted choices and open questions.
+Read [README.md](docs/README.md), [phases.md](docs/phases.md), [PRODUCT_SPEC.md](docs/PRODUCT_SPEC.md), [ARCHITECTURE.md](docs/ARCHITECTURE.md), and [PRIVACY_AND_SAFETY.md](docs/PRIVACY_AND_SAFETY.md) before implementation. Read [RESEARCH_PLAN.md](docs/RESEARCH_PLAN.md) and [MODEL_AND_EVALUATION.md](docs/MODEL_AND_EVALUATION.md) before selecting models, thresholds, datasets, or publishing claims. Consult [DECISIONS.md](docs/DECISIONS.md) for accepted choices and open questions. Read [SCOPE.md](docs/SCOPE.md) for the current supported scope and [SETUP.md](docs/SETUP.md) for commands and repository layout.
 
 The current user's instructions take precedence over these project defaults. Supporting documents define requirements in their stated areas. If supporting docs disagree, preserve the privacy boundary, record the discrepancy, and resolve routine details consistently with the user's accepted architecture. Ask only when an unresolved choice materially changes privacy, scope, cost authorization, or a research claim.
 

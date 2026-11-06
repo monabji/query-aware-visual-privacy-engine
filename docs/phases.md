@@ -4,15 +4,15 @@
 
 Proceed in dependency order and record evidence at each exit gate. Use small deliverables with real local processing. Keep incomplete gates open and mark work as planned, in progress, blocked, or complete. A phase is complete only when its stated deliverables exist and its relevant checks pass. Documentation does not establish app functionality.
 
-The six-month outline comes from the source worklet and is a planning guide, not an agreed deadline or a reason to skip quality gates. No implementation phase is complete yet. Future dates, budget, device matrix, dataset size, provider, and numeric quality targets remain unselected.
+The six-month outline comes from the source worklet and is a planning guide, not an agreed deadline or a reason to skip quality gates. Phase 1 is complete on a narrowed scope; no application phase is complete yet. Future dates, budget, device matrix, dataset size, provider, and numeric quality targets remain unselected.
 
 ## Status
 
 | Phase | Status | Evidence or next action |
 | --- | --- | --- |
 | 0: Project instructions | Complete | Root `AGENTS.md` and eight canonical Markdown files in `docs/`; based on full chat and 14-slide deck |
-| 1: Scope, research, and browser feasibility | Planned | Next phase; demonstrate local model execution and resolve initial scope |
-| 2: Local still-image application | Planned | Requires Phase 1 execution/scope decisions |
+| 1: Scope, research, and browser feasibility | Complete (narrowed scope), 2026-11-06 | Every required stage runs locally on desktop Chromium via WASM; visual grounding infeasible and dropped; faces provisional. See the completion record below and `docs/FEASIBILITY_RESULTS.md` |
+| 2: Local still-image application | Planned | Next phase. Starts from `docs/SCOPE.md` and must first close the Phase 1 carried items it depends on |
 | 3: Query-aware policy and exact preview | Planned | Requires real local detections and geometry |
 | 4: Hosted VLM answer path | Planned | Requires local sanitizer, checks, and approval gate |
 | 5: Benchmark and method refinement | Planned | Dataset work starts in Phase 1; final comparison requires Phase 4 |
@@ -128,3 +128,14 @@ Month 1: Phase 1. Month 2: Phase 2 and ongoing annotation. Month 3: Phases 3–4
 ## Completion record format
 
 For each phase update, record date, status, deliverable paths, relevant code/config revisions, checks actually performed, observations, unresolved issues, and the next dependent action. Keep records free of user images, questions, answers, private OCR, or content hashes. Do not mark complete merely because time ran out.
+
+## Completion records
+
+### Phase 1, 2026-11-06: complete on a narrowed scope
+
+- **Deliverables:** browser feasibility harness (`apps/feasibility-harness`); feasibility evidence (`docs/FEASIBILITY_RESULTS.md`, `research/results/2026-11-06-feasibility-*.json`); model manifest (`research/manifests/models.json`); scope and browser support decision (`docs/SCOPE.md`); related-work comparison (`docs/RELATED_WORK.md`); synthetic pilot set with paired questions (`packages/pilot`, `pilot-scenes@2`) and annotation guide (`docs/ANNOTATION_GUIDE.md`); decisions D10–D14 (`docs/DECISIONS.md`).
+- **Code revision:** branch `feat/phase-1-feasibility`. Measured runs used commits `3614d05` (WASM) and `2ddfa62` (WebGPU; no harness source change in between).
+- **Checks performed:** 47 Vitest checks in `@qavpe/core` and 8 in `@qavpe/pilot`; TypeScript strict typecheck of all workspaces; two harness pilot runs (WASM and WebGPU) on desktop Chromium 152, Windows 11, with the page visible.
+- **Observations:** OCR, rule-based and NER sensitive-text detection, face detection, text-anchor grounding, opaque masking, PNG encoding, and artifact checks all run locally. On the synthetic pilot, 13 of 15 sensitive elements were covered, all 12 questions parsed correctly, all 9 answerable questions were grounded, and all 5 artifacts passed the checks. OWL-ViT failed on both backends. MediaPipe telemetry was detected and blocked.
+- **Unresolved (carried to Phase 2):** face accuracy on consented images; rotated-text OCR; other desktop and phone browsers; clean WebGPU timing; unpinned `config.json` request; real-photograph pilot; full reading of arXiv 2609.15671 before any novelty claim; numeric gates, which are to be set from the Phase 2 photo pilot and validation data before any held-out run.
+- **Next dependent action:** Phase 2 scaffold (React with Vite per D10), creating `docs/DESIGN.md` when UI work starts.

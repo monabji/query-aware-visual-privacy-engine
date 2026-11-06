@@ -140,9 +140,9 @@ Only `approved` for the current artifact may transition to `sending`. Any releva
 
 ## Framework and module layout
 
-Provisional implementation default: TypeScript, React with Vite, local analysis workers, and a small TypeScript backend. Next.js is an acceptable alternative after recording the choice, provided original-image code never executes on or serializes to the server. No framework is installed yet.
+Provisional implementation default: TypeScript, React with Vite, local analysis workers, and a small TypeScript backend. Next.js is an acceptable alternative after recording the choice, provided original-image code never executes on or serializes to the server. The stack is recorded in D10. Phase 1 established an npm-workspace layout (D11): pure logic in `packages/core`, synthetic pilot data in `packages/pilot`, and browser adapters in `apps/feasibility-harness`. The product app and API will be added under `apps/`.
 
-Use separate modules for `session`, `image`, `analysis`, `policy`, `sanitize`, `verify`, and `vlm-client`; keep provider adapters server-only. Directory names are proposed and should match the selected scaffold. Model adapters must expose capabilities and failure status instead of silently falling back to cloud analysis.
+Use separate modules for `session`, `image`, `analysis`, `policy`, `sanitize`, `verify`, and `vlm-client`; keep provider adapters server-only. These module names map onto `packages/core` subfolders (`text`, `query`, `sanitize`, `measure`) and app-side adapters; keep that split as the app grows. Model adapters must expose capabilities and failure status instead of silently falling back to cloud analysis.
 
 Keep weights versioned in manifests, load them lazily, and distinguish first download from warm inference. Use workers for heavy work and release resources. WASM fallback is allowed only if its model support and resource use are acceptable. Otherwise, block upload with a clear explanation.
 

@@ -18,7 +18,7 @@ The user explicitly chose a web app, with possible phone and desktop wrappers la
 - One working hosted VLM integration through a server adapter. The adapter supports future model comparison without redesigning the privacy engine.
 - Reset/cancel behavior, actionable failures, and measurement that excludes user content from logs.
 
-Provisional starting tasks are product/package label reading, printed medicine-label transcription, and simple printed-document questions. Start with printed English/Latin text if feasibility supports it. These defaults require a recorded scope decision in Phase 1. Medicine examples concern visible text extraction, not diagnosis or clinical dosage advice.
+Provisional starting tasks are product/package label reading, printed medicine-label transcription, and simple printed-document questions. Start with printed English/Latin text if feasibility supports it. These defaults require a recorded scope decision in Phase 1. Medicine examples concern visible text extraction, not diagnosis or clinical dosage advice. The Phase 1 scope decision, which supersedes these provisional defaults where they differ, is recorded in `docs/SCOPE.md`.
 
 Initial candidate categories are faces, personal names, addresses, phone/email details, identity/account numbers, and machine-readable codes. Identity documents and medical records can carry sensitivity beyond recognizable PII. A detector for a few text patterns does not establish broad document privacy support.
 
