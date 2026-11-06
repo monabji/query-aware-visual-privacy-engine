@@ -1,6 +1,6 @@
 # Initial scope and support decision
 
-Status: Phase 1 decision, 2026-11-06, based on the feasibility evidence in `research/results/2026-11-06-feasibility.md`. It narrows the provisional scope in `PRODUCT_SPEC.md` to what has a working local path. Widen it only with new evidence.
+Status: Phase 1 decision, 2026-11-06, based on the feasibility evidence in `docs/FEASIBILITY_RESULTS.md`. It narrows the provisional scope in `PRODUCT_SPEC.md` to what has a working local path. Widen it only with new evidence.
 
 ## Tasks
 
@@ -52,7 +52,7 @@ These limits are provisional and will be checked against real phone photographs 
 
 | Target | Status | Evidence |
 | --- | --- | --- |
-| Desktop Chromium 152 on Windows 11 (Intel Iris Xe class GPU, 16 GB) | **Measured.** WASM path supported. WebGPU works for NER; WebGPU OCR and face paths use their own runtimes | `research/results/2026-11-06-feasibility.md` |
+| Desktop Chromium 152 on Windows 11 (Intel integrated GPU reported as gen-12lp, 16 GB) | **Measured.** WASM path supported. WebGPU works for NER; WebGPU OCR and face paths use their own runtimes | `docs/FEASIBILITY_RESULTS.md` |
 | Desktop Chrome stable, Edge, Firefox, Safari | Not measured | Required before the support claim in Phase 2 |
 | Phone browsers (Android Chrome, iOS Safari) | **Not measured; no phone-web support claimed** | Requires real devices. The WASM path downloads 112.9 MB of model files plus 43.3 MB of runtime WASM, measured 2026-11-06. That must be checked against phone memory and storage limits |
 
