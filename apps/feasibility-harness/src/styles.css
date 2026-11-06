@@ -1,0 +1,89 @@
+/* Development tool styling only. Product visual design is defined in docs/DESIGN.md (Phase 2). */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #1d1f21;
+  --muted: #5c6166;
+  --border: #d5d8db;
+  --panel: #f6f7f8;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.45;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15171a;
+    --fg: #e6e8ea;
+    --muted: #9aa1a8;
+    --border: #353a40;
+    --panel: #1d2024;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.banner,
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.banner p,
+.muted {
+  color: var(--muted);
+}
+
+section {
+  border-top: 1px solid var(--border);
+  padding: 8px 0 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.scenes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+figure {
+  margin: 0;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 8px;
+}
+
+figure canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+figcaption {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.log,
+.report {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 8px;
+  max-height: 360px;
+  overflow: auto;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
