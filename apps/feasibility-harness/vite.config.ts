@@ -1,6 +1,7 @@
+import { execSync } from "node:child_process";
 import { createReadStream, existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { createRequire } from "node:module";
-import { dirname, extname, join, normalize } from "node:path";
+import { extname, join, normalize } from "node:path";
 import { defineConfig, type Plugin } from "vite";
 
 /**
@@ -9,7 +10,14 @@ import { defineConfig, type Plugin } from "vite";
  * package versions. Only model weights and language data are fetched remotely.
  */
 const require = createRequire(import.meta.url);
-const packageDir = (name: string) => dirname(require.resolve(`${name}/package.json`));
+/** Locate an installed package directory without relying on its `exports` map. */
+function packageDir(name: string): string {
+  for (const base of require.resolve.paths(name) ?? []) {
+    const candidate = join(base, name);
+    if (existsSync(join(candidate, "package.json"))) return candidate;
+  }
+  throw new Error(`package not installed: ${name}`);
+}
 
 const VENDOR_DIRS: Record<string, string> = {
   "tesseract-worker": join(packageDir("tesseract.js"), "dist"),
@@ -22,6 +30,15 @@ const VENDOR_DIRS: Record<string, string> = {
 const VENDOR_FILTER: Record<string, RegExp> = {
   "onnxruntime-web": /^ort-wasm-simd-threaded\.asyncify\.(mjs|wasm)$/,
 };
+
+/**
+ * Cross-origin isolation enables multi-threaded WASM and
+ * performance.measureUserAgentSpecificMemory() for memory measurement.
+ */
+const ISOLATION_HEADERS = {
+  "Cross-Origin-Opener-Policy": "same-origin",
+  "Cross-Origin-Embedder-Policy": "require-corp",
+} as const;
 
 const MIME: Record<string, string> = {
   ".js": "text/javascript",
@@ -41,6 +58,9 @@ function vendorAssets(): Plugin {
         const file = normalize(join(root, decodeURIComponent(match[2] as string)));
         if (!file.startsWith(root) || !existsSync(file) || !statSync(file).isFile()) return next();
         res.setHeader("Content-Type", MIME[extname(file)] ?? "application/octet-stream");
+        // Worker scripts must carry their own isolation headers under COEP.
+        for (const [name, value] of Object.entries(ISOLATION_HEADERS)) res.setHeader(name, value);
+        res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
         createReadStream(file).pipe(res);
       });
     },
@@ -56,17 +76,21 @@ function vendorAssets(): Plugin {
   };
 }
 
+function gitRevision(): string {
+  try {
+    return execSync("git rev-parse --short HEAD", { encoding: "utf8" }).trim();
+  } catch {
+    return "unknown";
+  }
+}
+
 export default defineConfig({
   plugins: [vendorAssets()],
+  define: { __HARNESS_REVISION__: JSON.stringify(gitRevision()) },
   server: {
     port: 5173,
     strictPort: true,
-    // Cross-origin isolation enables multi-threaded WASM and
-    // performance.measureUserAgentSpecificMemory() for memory measurement.
-    headers: {
-      "Cross-Origin-Opener-Policy": "same-origin",
-      "Cross-Origin-Embedder-Policy": "require-corp",
-    },
+    headers: ISOLATION_HEADERS,
   },
   build: { target: "es2022" },
   worker: { format: "es" },
