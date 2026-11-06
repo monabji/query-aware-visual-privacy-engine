@@ -35,7 +35,9 @@ Open `http://localhost:5173`. Then:
 2. **Run pilot.** This renders the synthetic scenes, runs every local stage, scores the results against render-time ground truth, builds clean artifacts, and checks them.
 3. **Download report JSON.** The report contains environment details, timings, counts, and network summaries. It contains no image content or text. Committed results record the browser engine and version in place of the raw user-agent string.
 
-To compare backends, choose WebGPU or WASM before loading. To measure a cold start, clear the site's storage in the browser's developer tools before loading.
+The report's `harnessRevision` is the commit at dev-server start. Restart the server after committing so that recorded runs carry the correct revision. Keep the browser window visible during measurement, because background tabs are throttled.
+
+To compare backends, reload the page and choose WebGPU or WASM before loading. A failed model session can affect later sessions in the same page, so measure each backend in a fresh page. To measure a cold start, clear the site's storage in the browser's developer tools before loading.
 
 The dev server sends `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp`. These headers enable threaded WASM and whole-page memory measurement. The page's Content-Security-Policy limits network access to this origin and the declared model-asset hosts.
 
