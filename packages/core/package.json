@@ -1,0 +1,14 @@
+{
+  "name": "@qavpe/core",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Shared contracts and pure, environment-independent privacy engine logic.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  }
+}
