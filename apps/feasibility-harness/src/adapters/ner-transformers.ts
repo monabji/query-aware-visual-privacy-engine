@@ -1,6 +1,7 @@
 import {
   boxToPolygon,
   lineText,
+  locateFragment,
   unionBoxes,
   wordsInSpan,
   type OcrResult,
@@ -71,13 +72,20 @@ export class BertNerAdapter implements LocalAdapter<OcrResult, Region[]> {
       } catch (cause) {
         throw new StageError("sensitive_text", "INFERENCE_FAILED", { cause });
       }
+      let cursor = 0;
       for (const entity of entities) {
+        // Grouped output from this model omits character offsets; recover the
+        // span by locating the entity text in order. An unlocatable entity is
+        // a failure, never a silent skip.
+        const span =
+          entity.start !== undefined && entity.end !== undefined
+            ? { start: entity.start, end: entity.end }
+            : locateFragment(text, entity.word, cursor);
+        if (!span) throw new StageError("sensitive_text", "UNMAPPABLE_ENTITY");
+        cursor = span.end;
         const category = LABEL_TO_CATEGORY[entity.entity_group.replace(/^[BI]-/, "")];
         if (!category || entity.score < this.minScore) continue;
-        if (entity.start === undefined || entity.end === undefined) {
-          throw new StageError("sensitive_text", "MISSING_ENTITY_OFFSETS");
-        }
-        const indices = wordsInSpan(line, entity.start, entity.end);
+        const indices = wordsInSpan(line, span.start, span.end);
         if (indices.length === 0) continue;
         const bounds = unionBoxes(indices.map((i) => line.words[i]!.bounds));
         regions.push({
