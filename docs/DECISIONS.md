@@ -19,6 +19,8 @@ All supporting Markdown files live in `docs/`. Root `AGENTS.md` is the entry poi
 | D07 | Phone and desktop wrappers may follow | Reuse UI/contracts where practical and validate native inference separately. No wrapper is required to complete the web MVP. |
 | D08 | Generate agent docs plus `phases.md` | User requested all discussed files and a comprehensive summary after reviewing the chat and deck. |
 | D09 | Keep every supporting Markdown file in one folder | Latest user instruction places `README.md`, `phases.md`, and the other specs in `docs/`, with only `AGENTS.md` outside. |
+| D10 | 2026-11-06. Stack: TypeScript on npm workspaces, Vite for browser builds, Vitest for targeted checks. Product UI will use React with Vite (Phase 2); the thin backend stays TypeScript, framework chosen in Phase 4 | Confirms the provisional default; Next.js not chosen because a separate Vite client and API keep the client/server boundary explicit. Pinned versions are at least two weeks old at selection; TypeScript 6.0.3 chosen over the 7.x native compiler for ecosystem stability. Revisit if Phase 2 or 4 needs differ. |
+| D11 | 2026-11-06. Repository layout: `packages/` for shared libraries (`core` contracts and pure logic, `pilot` synthetic scenes), `apps/` for runnable apps (`feasibility-harness` now, product web app and API later), `research/` for manifests and content-free results, `docs/` for all Markdown | User asked for a professional code hierarchy. Pure logic is testable in Node without a browser; browser-only adapters stay inside apps. |
 
 ## Specification details
 

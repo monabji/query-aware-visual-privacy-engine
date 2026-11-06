@@ -1,0 +1,24 @@
+{
+  "name": "query-aware-visual-privacy-engine",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Local, query-aware image sanitization before hosted vision-language model answering.",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "harness": "npm run dev --workspace @qavpe/feasibility-harness"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "vitest": "5.0.5"
+  }
+}
