@@ -22,6 +22,8 @@ All supporting Markdown files live in `docs/`. Root `AGENTS.md` is the entry poi
 | D10 | 2026-11-06. Stack: TypeScript on npm workspaces, Vite for browser builds, Vitest for targeted checks. Product UI will use React with Vite (Phase 2); the thin backend stays TypeScript, framework chosen in Phase 4 | Confirms the provisional default; Next.js not chosen because a separate Vite client and API keep the client/server boundary explicit. Pinned versions are at least two weeks old at selection; TypeScript 6.0.3 chosen over the 7.x native compiler for ecosystem stability. Revisit if Phase 2 or 4 needs differ. |
 | D11 | 2026-11-06. Repository layout: `packages/` for shared libraries (`core` contracts and pure logic, `pilot` synthetic scenes), `apps/` for runnable apps (`feasibility-harness` now, product web app and API later), `research/` for manifests and content-free results, `docs/` for all Markdown | User asked for a professional code hierarchy. Pure logic is testable in Node without a browser; browser-only adapters stay inside apps. |
 | D12 | 2026-11-06. Every page that runs local models sets a Content-Security-Policy whose `connect-src` allows only the app origin and declared model-asset hosts. Runtime code (WASM, workers) is served from the app origin | The Phase 1 harness found that MediaPipe Tasks Vision 1.1.1 creates a usage logger unconditionally and POSTs protobuf usage records to `odml.pa.googleapis.com` with an embedded API key. Its public API has no opt-out. The CSP and the egress guard blocked it. The records observed are usage counters, not image content, but rule 9 forbids unrequested analytics. Revisit if a face detector without telemetry is selected. |
+| D13 | 2026-11-06. First-release grounding is the deterministic text-anchor matcher over OCR (`text-anchor@1`) for four printed-text targets. Visual object grounding and segmentation are out of the first release | OWL-ViT (`Xenova/owlvit-base-patch32`) failed session creation on WebGPU and WASM with ONNX Runtime Web 1.31.0-dev. All supported targets are text fields. Revisit if a non-text target is proposed and a visual grounder runs in the browser. Evidence: `docs/FEASIBILITY_RESULTS.md`. |
+| D14 | 2026-11-06. WASM with SIMD is the reference execution backend; WebGPU is optional acceleration and never required. Initial scope is recorded in `docs/SCOPE.md` | Every stage ran on WASM on the measured device; the WebGPU NER model is four times larger and was not retained in the browser cache. Revisit after a clean WebGPU timing and phone measurements. |
 
 ## Specification details
 
@@ -41,10 +43,10 @@ All supporting Markdown files live in `docs/`. Root `AGENTS.md` is the entry poi
 ## Provisional choices
 
 - TypeScript, React with Vite, and a separate thin TypeScript API are a default starting stack. Next.js remains an alternative. Record the final choice before scaffolding.
-- Transformers.js or ONNX Runtime Web with WebGPU/WASM are candidate browser runtimes. Actual compatibility and performance are unmeasured.
+- Transformers.js 4.3.1 on ONNX Runtime Web is in use for NER; Tesseract.js and MediaPipe use their own WASM runtimes. Measured on one desktop browser only (see `docs/FEASIBILITY_RESULTS.md`); other browsers and phones remain unmeasured.
 - Printed English/Latin text and a small task/category list are initial scope proposals. Final support requires a Phase 1 record.
 - Package-label, medicine-label transcription, and simple document questions are candidate domains, not a medical-advice feature.
-- Grounding DINO/OWL-family grounding, SAM-family masks, OCR tools, local NER/patterns, and compact face/code detectors are candidates. The deck's software list is not an installation checklist.
+- Grounding DINO/OWL-family grounding, SAM-family masks, OCR tools, local NER/patterns, and compact face/code detectors are candidates. The deck's software list is not an installation checklist. Phase 1 candidates and their measured status are in `research/manifests/models.json`; OWL-ViT is infeasible with the tested runtime (D13).
 - Qwen2.5-VL and GLM-4.5V were hosted-VLM examples. Recheck their serving availability and compare task performance with other permitted models. No model has earned a "best" label.
 - Pilot data determine the benchmark scale, supported matrix, thresholds, and practical latency budget. No number is yet agreed.
 
@@ -74,9 +76,9 @@ The original discussion's broad claim that no prior work addresses task-oriented
 
 | Question | Resolve by | Evidence needed |
 | --- | --- | --- |
-| Which desktop/phone browsers and devices are supported? | Phase 1 | Real local-runtime results and memory/download limits |
-| Which image formats, resolutions, tasks, languages and categories? | Phase 1 | Pilot examples, detector coverage and user-facing scope |
-| Which framework and browser models? | Phase 1 | Feasibility plus maintainability and license review |
+| Which desktop/phone browsers and devices are supported? | Phase 1 (partly resolved), Phase 2 | Desktop Chromium measured (`docs/SCOPE.md`); other desktop browsers and real phones still required |
+| Which image formats, resolutions, tasks, languages and categories? | Resolved for first release 2026-11-06 (`docs/SCOPE.md`); limits to be checked on photographs in Phase 2 | Pilot examples, detector coverage and user-facing scope |
+| Which framework and browser models? | Resolved 2026-11-06 (D10, D13, D14, `research/manifests/models.json`); face model provisional | Face accuracy on consented images |
 | What rules govern necessary sensitive disclosures? | Phases 1–3 | Task/category policy, conflict examples and clear preview behavior |
 | Which hosted VLM/provider and cost ceiling? | Before Phase 4 integration/charged use | Current APIs/terms, model comparison and user budget authorization where needed |
 | What are leakage, accuracy, coverage, latency and resource gates? | Before frozen Phase 5 evaluation | Validation/pilot evidence and documented operational goals |
