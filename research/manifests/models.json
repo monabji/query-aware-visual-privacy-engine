@@ -1,0 +1,92 @@
+{
+  "manifestVersion": "models@1",
+  "verifiedOn": "2026-11-06",
+  "notes": "Phase 1 candidate local components. Status 'candidate' means the component loads and runs in the harness; it is not selected for release until its quality is measured on representative data. Measured timings live in research/results, not here.",
+  "components": [
+    {
+      "stage": "ocr",
+      "adapterId": "tesseract-js",
+      "status": "candidate",
+      "package": "tesseract.js@7.0.0",
+      "runtimePackage": "tesseract.js-core@7.0.0",
+      "model": "eng.traineddata",
+      "modelSource": "https://cdn.jsdelivr.net/npm/@tesseract.js-data/eng/4.0.0_best_int",
+      "modelRevision": "4.0.0_best_int",
+      "license": "Apache-2.0",
+      "execution": "WebAssembly in a dedicated worker; code served from the app origin",
+      "precision": "LSTM integer model",
+      "languages": ["en"],
+      "geometry": "word and line axis-aligned boxes in input pixels"
+    },
+    {
+      "stage": "sensitive_text",
+      "adapterId": "sensitive-patterns@1",
+      "status": "candidate",
+      "package": "@qavpe/core",
+      "model": "deterministic value patterns and field labels",
+      "license": "project code",
+      "execution": "main thread, pure TypeScript",
+      "languages": ["en"],
+      "limits": "Unlabelled names and addresses are not detected by this component"
+    },
+    {
+      "stage": "sensitive_text",
+      "adapterId": "bert-base-ner",
+      "status": "candidate",
+      "package": "@huggingface/transformers@4.3.1",
+      "runtimePackage": "onnxruntime-web@1.31.0-dev.20260914-8d85527a0",
+      "model": "Xenova/bert-base-NER",
+      "modelRevision": "8e892123e8b7c2c0c2bd1dcb598b7d244c4e53aa",
+      "license": "MIT",
+      "execution": "WebGPU (fp32) or WASM (q8); ONNX Runtime WASM served from the app origin",
+      "languages": ["en"],
+      "labels": "CoNLL-03 PER, LOC, ORG, MISC; PER and LOC mapped to person_name and postal_address",
+      "limits": "Trained on news text; recall on labels and documents unmeasured"
+    },
+    {
+      "stage": "face_detection",
+      "adapterId": "mediapipe-blazeface-short-range",
+      "status": "candidate",
+      "package": "@mediapipe/tasks-vision@1.1.1",
+      "model": "blaze_face_short_range.tflite (float16)",
+      "modelSource": "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite",
+      "modelRevision": "path version 1",
+      "license": "Apache-2.0",
+      "execution": "MediaPipe WASM with GPU or CPU delegate; WASM served from the app origin",
+      "limits": "Short-range model intended for faces near the camera; small background faces likely missed. Accuracy on consented photographs unmeasured"
+    },
+    {
+      "stage": "query_grounding",
+      "adapterId": "text-anchor@1",
+      "status": "candidate",
+      "package": "@qavpe/core",
+      "model": "rule-based intent schema plus OCR anchor/value matching",
+      "license": "project code",
+      "execution": "main thread, pure TypeScript",
+      "targets": ["expiry_date", "manufacture_date", "batch_number", "strength"]
+    },
+    {
+      "stage": "query_grounding",
+      "adapterId": "owlvit-base-patch32",
+      "status": "exploratory",
+      "package": "@huggingface/transformers@4.3.1",
+      "model": "Xenova/owlvit-base-patch32",
+      "modelRevision": "b75f4e52949639c3bb0b96546ea4149482f6e7ef",
+      "license": "Apache-2.0 upstream (google/owlvit-base-patch32); the ONNX repository card declares no license, so verify before release",
+      "execution": "WebGPU (fp32) or WASM (q8)",
+      "limits": "Open-vocabulary object boxes; not designed to localise individual text fields"
+    },
+    {
+      "stage": "encode",
+      "adapterId": "canvas-png",
+      "status": "candidate",
+      "model": "HTMLCanvasElement.toBlob('image/png') on a fresh opaque canvas",
+      "license": "browser built-in",
+      "checks": "PNG chunk allowlist, dimensions, full opacity, exact mask colour on re-decoded pixels"
+    }
+  ],
+  "deferred": [
+    { "stage": "segmentation", "reason": "OCR boxes and conservative face boxes suffice for the Phase 1 categories; SAM-family models stay optional" },
+    { "stage": "machine_readable_code", "reason": "No browser code detector integrated yet; codes are not a supported category" }
+  ]
+}
