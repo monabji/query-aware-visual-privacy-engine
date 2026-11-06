@@ -38,6 +38,26 @@ export function wordOffsets(line: OcrLine): Array<{ start: number; end: number }
   return offsets;
 }
 
+/**
+ * Locate a model-reported text fragment (e.g. an NER entity without
+ * character offsets) in `text`, searching from `fromIndex` so repeated
+ * fragments map in order. Case-insensitive; WordPiece markers ("##") are
+ * removed and whitespace runs match any whitespace. Returns null when the
+ * fragment cannot be located, which callers must treat as a failure.
+ */
+export function locateFragment(text: string, fragment: string, fromIndex = 0): { start: number; end: number } | null {
+  const cleaned = fragment.replace(/\s*##/g, "").trim();
+  if (cleaned.length === 0) return null;
+  const escaped = cleaned
+    .split(/\s+/)
+    .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .join("\\s+");
+  const pattern = new RegExp(escaped, "giu");
+  pattern.lastIndex = fromIndex;
+  const match = pattern.exec(text);
+  return match ? { start: match.index, end: match.index + match[0].length } : null;
+}
+
 /** Indices of words that overlap the half-open character span [start, end). */
 export function wordsInSpan(line: OcrLine, start: number, end: number): number[] {
   return wordOffsets(line)
