@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      Egress boundary for the harness: scripts, workers and WASM come from this
+      origin; network fetches may reach only this origin and the declared
+      model-asset hosts. User images never leave the page.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; worker-src 'self' blob:; connect-src 'self' blob: data: https://cdn.jsdelivr.net https://huggingface.co https://*.hf.co https://*.huggingface.co https://storage.googleapis.com; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <title>Feasibility Harness</title>
+  </head>
+  <body>
+    <header class="banner">
+      <h1>Browser feasibility harness</h1>
+      <p>
+        Phase 1 development tool. Measures whether each required stage runs locally in this browser. Pilot scenes are
+        <strong>synthetic fixtures</strong>; their values are fabricated. Selected images are processed in this page only and are
+        never uploaded. Reports contain timings and counts, never image content or text.
+      </p>
+    </header>
+
+    <main>
+      <section aria-labelledby="setup-heading">
+        <h2 id="setup-heading">1. Load local models</h2>
+        <div class="row">
+          <label>
+            Backend
+            <select id="backend">
+              <option value="auto">Auto (WebGPU if available)</option>
+              <option value="webgpu">WebGPU</option>
+              <option value="wasm">WASM</option>
+            </select>
+          </label>
+          <button id="load" type="button">Load models</button>
+        </div>
+        <p id="progress" class="muted" aria-live="polite"></p>
+      </section>
+
+      <section aria-labelledby="pilot-heading">
+        <h2 id="pilot-heading">2. Run synthetic pilot</h2>
+        <div class="row">
+          <label>
+            Warm repeats per scene
+            <input id="repeats" type="number" min="1" max="10" value="3" />
+          </label>
+          <button id="run-pilot" type="button" disabled>Run pilot</button>
+          <button id="cancel" type="button" disabled>Cancel</button>
+        </div>
+        <div id="scenes" class="scenes"></div>
+      </section>
+
+      <section aria-labelledby="own-heading">
+        <h2 id="own-heading">3. Try your own image locally (optional)</h2>
+        <p class="muted">
+          Use only images you have permission to process. Nothing is sent anywhere; the result stays on screen until you clear it.
+        </p>
+        <div class="row">
+          <input id="file" type="file" accept="image/png,image/jpeg" disabled />
+          <input id="question" type="text" placeholder="Question, e.g. What expiry date is printed?" size="44" disabled />
+          <button id="analyze" type="button" disabled>Analyze locally</button>
+          <button id="clear" type="button">Clear</button>
+        </div>
+        <p id="own-status" class="muted" aria-live="polite"></p>
+        <div id="own" class="scenes"></div>
+      </section>
+
+      <section aria-labelledby="report-heading">
+        <h2 id="report-heading">4. Report</h2>
+        <div class="row">
+          <button id="download" type="button" disabled>Download report JSON</button>
+        </div>
+        <pre id="log" class="log" aria-live="polite"></pre>
+        <pre id="report" class="report"></pre>
+      </section>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

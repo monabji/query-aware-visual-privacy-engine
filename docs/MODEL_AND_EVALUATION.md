@@ -2,7 +2,7 @@
 
 ## Selection policy
 
-Use pretrained models and existing hosted VLMs where they work. The user prioritizes precise outputs. Select components using task-specific evidence under the local-processing boundary, rather than a general leaderboard or a model's parameter count. No model or provider is selected yet, and no browser compatibility, availability, price, accuracy, or latency figure in the chat is a measured project result.
+Use pretrained models and existing hosted VLMs where they work. The user prioritizes precise outputs. Select components using task-specific evidence under the local-processing boundary, rather than a general leaderboard or a model's parameter count. No hosted VLM or provider is selected yet. Phase 1 local candidates and their measured browser status are pinned in `research/manifests/models.json` and reported in `docs/FEASIBILITY_RESULTS.md`; figures quoted in the original chat remain unmeasured claims.
 
 A model repository, a public demo/Space, an inference-provider listing, and a dedicated endpoint are different deployment options. Do not assume a model on Hugging Face is already served, private, stable, or browser-compatible. Confirm actual APIs and terms before integration. Public demos are not production dependencies or evaluation infrastructure.
 

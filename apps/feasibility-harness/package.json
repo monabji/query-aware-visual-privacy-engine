@@ -1,0 +1,23 @@
+{
+  "name": "@qavpe/feasibility-harness",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Phase 1 browser feasibility harness: measures local OCR, sensitive-text, face, grounding and clean-encoding stages.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -p tsconfig.json && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "4.3.1",
+    "@mediapipe/tasks-vision": "1.1.1",
+    "@qavpe/core": "0.0.0",
+    "@qavpe/pilot": "0.0.0",
+    "tesseract.js": "7.0.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.5"
+  }
+}

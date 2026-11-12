@@ -1,0 +1,571 @@
+{
+  "reportVersion": "feasibility-report@1",
+  "generatedAt": "2026-11-06T10:13:20.504Z",
+  "harnessRevision": "3614d05",
+  "preferredBackend": "wasm",
+  "environment": {
+    "platform": "Windows",
+    "hardwareConcurrency": 12,
+    "deviceMemoryGb": 16,
+    "crossOriginIsolated": true,
+    "webGpu": {
+      "available": true,
+      "vendor": "intel",
+      "architecture": "gen-12lp"
+    },
+    "wasmSimd": true,
+    "sharedArrayBuffer": true,
+    "browserEngine": "Chromium 152.0.7977.167 (embedded desktop browser, Windows 11)"
+  },
+  "adapters": [
+    {
+      "info": {
+        "stage": "ocr",
+        "id": "tesseract-js",
+        "model": "tesseract eng LSTM (4.0.0_best_int)",
+        "revision": "tesseract.js@7.0.0; tesseract.js-core@7.0.0; @tesseract.js-data/eng@4.0.0_best_int",
+        "runtime": "Tesseract compiled to WebAssembly, in a dedicated worker",
+        "license": "Apache-2.0 (engine and eng traineddata)",
+        "assetHosts": [
+          "cdn.jsdelivr.net"
+        ]
+      },
+      "status": "loaded",
+      "load": {
+        "backend": "wasm",
+        "loadMs": 149.62000000476837
+      }
+    },
+    {
+      "info": {
+        "stage": "sensitive_text",
+        "id": "bert-base-ner",
+        "model": "Xenova/bert-base-NER",
+        "revision": "8e892123e8b7c2c0c2bd1dcb598b7d244c4e53aa",
+        "runtime": "Transformers.js 4.3.1 / ONNX Runtime Web",
+        "license": "MIT",
+        "assetHosts": [
+          "huggingface.co",
+          "*.hf.co"
+        ]
+      },
+      "status": "loaded",
+      "load": {
+        "backend": "wasm",
+        "loadMs": 2050.6699999570847
+      }
+    },
+    {
+      "info": {
+        "stage": "face_detection",
+        "id": "mediapipe-blazeface-short-range",
+        "model": "BlazeFace short-range (float16)",
+        "revision": "@mediapipe/tasks-vision@1.1.1; model path version 1",
+        "runtime": "MediaPipe Tasks Vision (WebAssembly; GPU or CPU delegate)",
+        "license": "Apache-2.0",
+        "assetHosts": [
+          "storage.googleapis.com"
+        ]
+      },
+      "status": "loaded",
+      "load": {
+        "backend": "cpu-delegate",
+        "loadMs": 230.43499994277954
+      }
+    },
+    {
+      "info": {
+        "stage": "query_grounding",
+        "id": "owlvit-base-patch32",
+        "model": "Xenova/owlvit-base-patch32",
+        "revision": "b75f4e52949639c3bb0b96546ea4149482f6e7ef",
+        "runtime": "Transformers.js 4.3.1 / ONNX Runtime Web",
+        "license": "Apache-2.0 (upstream google/owlvit-base-patch32; ONNX repo card declares none — verify before release)",
+        "assetHosts": [
+          "huggingface.co",
+          "*.hf.co"
+        ]
+      },
+      "status": "failed",
+      "reasonCode": "MODEL_LOAD_FAILED"
+    }
+  ],
+  "timings": [
+    {
+      "stage": "ocr",
+      "adapterId": "tesseract-js",
+      "firstRunMs": 266.25999999046326,
+      "warm": {
+        "count": 14,
+        "minMs": 122.47000002861023,
+        "p50Ms": 174.19999992847443,
+        "p95Ms": 221.50999999046326,
+        "maxMs": 221.50999999046326
+      }
+    },
+    {
+      "stage": "sensitive_text",
+      "adapterId": "sensitive-patterns@1",
+      "firstRunMs": 0.7249999046325684,
+      "warm": {
+        "count": 14,
+        "minMs": 0.039999961853027344,
+        "p50Ms": 0.05000007152557373,
+        "p95Ms": 0.5049999952316284,
+        "maxMs": 0.5049999952316284
+      }
+    },
+    {
+      "stage": "sensitive_text",
+      "adapterId": "bert-base-ner",
+      "firstRunMs": 239.25999999046326,
+      "warm": {
+        "count": 14,
+        "minMs": 95.49500000476837,
+        "p50Ms": 136.21000003814697,
+        "p95Ms": 196.3049999475479,
+        "maxMs": 196.3049999475479
+      }
+    },
+    {
+      "stage": "face_detection",
+      "adapterId": "mediapipe-blazeface-short-range",
+      "firstRunMs": 65.06499993801117,
+      "warm": {
+        "count": 14,
+        "minMs": 5.925000071525574,
+        "p50Ms": 9.775000095367432,
+        "p95Ms": 18.66000008583069,
+        "maxMs": 18.66000008583069
+      }
+    },
+    {
+      "stage": "encode",
+      "adapterId": "canvas-opaque-fill",
+      "firstRunMs": 0.21000003814697266,
+      "warm": {
+        "count": 4,
+        "minMs": 0.18999993801116943,
+        "p50Ms": 0.22999989986419678,
+        "p95Ms": 0.3049999475479126,
+        "maxMs": 0.3049999475479126
+      }
+    },
+    {
+      "stage": "encode",
+      "adapterId": "canvas-png",
+      "firstRunMs": 15.355000019073486,
+      "warm": {
+        "count": 4,
+        "minMs": 8.915000081062317,
+        "p50Ms": 11.784999966621399,
+        "p95Ms": 17.925000071525574,
+        "maxMs": 17.925000071525574
+      }
+    },
+    {
+      "stage": "output_check",
+      "adapterId": "artifact-check@1",
+      "firstRunMs": 8.370000004768372,
+      "warm": {
+        "count": 4,
+        "minMs": 6.320000052452087,
+        "p50Ms": 6.699999928474426,
+        "p95Ms": 13.190000057220459,
+        "maxMs": 13.190000057220459
+      }
+    }
+  ],
+  "pilot": {
+    "scenesVersion": "pilot-scenes@2",
+    "repeats": 3,
+    "scenes": [
+      {
+        "sceneId": "carton-with-pharmacy-sticker",
+        "tags": [
+          "separate-regions",
+          "multi-category"
+        ],
+        "sensitiveTotal": 5,
+        "sensitiveCovered": 5,
+        "sensitiveByCategory": {
+          "person_name": {
+            "total": 1,
+            "covered": 1
+          },
+          "postal_address": {
+            "total": 2,
+            "covered": 2
+          },
+          "phone_number": {
+            "total": 1,
+            "covered": 1
+          },
+          "identifier_number": {
+            "total": 1,
+            "covered": 1
+          }
+        },
+        "evidenceTotal": 5,
+        "evidenceDamaged": 0,
+        "benignTotal": 5,
+        "benignOverRedacted": 0,
+        "falsePositiveFaces": 0,
+        "questions": [
+          {
+            "questionId": "q-expiry",
+            "intentCorrect": true,
+            "expectedTarget": "expiry_date",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-batch",
+            "intentCorrect": true,
+            "expectedTarget": "batch_number",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-strength",
+            "intentCorrect": true,
+            "expectedTarget": "strength",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          }
+        ]
+      },
+      {
+        "sceneId": "label-expiry-beside-name",
+        "tags": [
+          "same-line-conflict",
+          "relevant-and-sensitive-overlap"
+        ],
+        "sensitiveTotal": 2,
+        "sensitiveCovered": 2,
+        "sensitiveByCategory": {
+          "person_name": {
+            "total": 1,
+            "covered": 1
+          },
+          "email_address": {
+            "total": 1,
+            "covered": 1
+          }
+        },
+        "evidenceTotal": 3,
+        "evidenceDamaged": 1,
+        "benignTotal": 3,
+        "benignOverRedacted": 0,
+        "falsePositiveFaces": 0,
+        "questions": [
+          {
+            "questionId": "q-useby",
+            "intentCorrect": true,
+            "expectedTarget": "expiry_date",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 1,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-strength",
+            "intentCorrect": true,
+            "expectedTarget": "strength",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-who",
+            "intentCorrect": true,
+            "expectedTarget": null,
+            "groundedRegionCount": 0,
+            "evidenceGrounded": null,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 1,
+            "visualGroundingCovers": null
+          }
+        ]
+      },
+      {
+        "sceneId": "package-benign-contact",
+        "tags": [
+          "no-personal-data",
+          "over-redaction-probe"
+        ],
+        "sensitiveTotal": 0,
+        "sensitiveCovered": 0,
+        "sensitiveByCategory": {},
+        "evidenceTotal": 4,
+        "evidenceDamaged": 0,
+        "benignTotal": 2,
+        "benignOverRedacted": 1,
+        "falsePositiveFaces": 0,
+        "questions": [
+          {
+            "questionId": "q-best",
+            "intentCorrect": true,
+            "expectedTarget": "expiry_date",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-lot",
+            "intentCorrect": true,
+            "expectedTarget": "batch_number",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          }
+        ]
+      },
+      {
+        "sceneId": "letter-no-answer",
+        "tags": [
+          "unanswerable",
+          "document",
+          "small-text"
+        ],
+        "sensitiveTotal": 5,
+        "sensitiveCovered": 5,
+        "sensitiveByCategory": {
+          "person_name": {
+            "total": 1,
+            "covered": 1
+          },
+          "date_of_birth": {
+            "total": 1,
+            "covered": 1
+          },
+          "identifier_number": {
+            "total": 2,
+            "covered": 2
+          },
+          "phone_number": {
+            "total": 1,
+            "covered": 1
+          }
+        },
+        "evidenceTotal": 0,
+        "evidenceDamaged": 0,
+        "benignTotal": 8,
+        "benignOverRedacted": 0,
+        "falsePositiveFaces": 0,
+        "questions": [
+          {
+            "questionId": "q-expiry-absent",
+            "intentCorrect": true,
+            "expectedTarget": "expiry_date",
+            "groundedRegionCount": 0,
+            "evidenceGrounded": null,
+            "correctlyEmpty": true,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-unsupported",
+            "intentCorrect": true,
+            "expectedTarget": null,
+            "groundedRegionCount": 0,
+            "evidenceGrounded": null,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          }
+        ]
+      },
+      {
+        "sceneId": "rotated-sticker",
+        "tags": [
+          "rotation",
+          "separate-regions"
+        ],
+        "sensitiveTotal": 3,
+        "sensitiveCovered": 1,
+        "sensitiveByCategory": {
+          "person_name": {
+            "total": 1,
+            "covered": 0
+          },
+          "phone_number": {
+            "total": 1,
+            "covered": 1
+          },
+          "postal_address": {
+            "total": 1,
+            "covered": 0
+          }
+        },
+        "evidenceTotal": 3,
+        "evidenceDamaged": 0,
+        "benignTotal": 3,
+        "benignOverRedacted": 0,
+        "falsePositiveFaces": 0,
+        "questions": [
+          {
+            "questionId": "q-expiry",
+            "intentCorrect": true,
+            "expectedTarget": "expiry_date",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          },
+          {
+            "questionId": "q-strength",
+            "intentCorrect": true,
+            "expectedTarget": "strength",
+            "groundedRegionCount": 1,
+            "evidenceGrounded": true,
+            "correctlyEmpty": null,
+            "overlapsWithMasks": 0,
+            "expectedConflicts": 0,
+            "visualGroundingCovers": null
+          }
+        ]
+      }
+    ],
+    "artifactChecks": [
+      {
+        "formatIsPng": true,
+        "dimensionsMatch": true,
+        "unexpectedChunks": [],
+        "failingMaskBoxes": 0,
+        "nonOpaquePixels": 0,
+        "passed": true,
+        "sceneId": "carton-with-pharmacy-sticker",
+        "residualSensitiveFindings": 0,
+        "maskedAreaFraction": 0.03727864583333333
+      },
+      {
+        "formatIsPng": true,
+        "dimensionsMatch": true,
+        "unexpectedChunks": [],
+        "failingMaskBoxes": 0,
+        "nonOpaquePixels": 0,
+        "passed": true,
+        "sceneId": "label-expiry-beside-name",
+        "residualSensitiveFindings": 0,
+        "maskedAreaFraction": 0.05348
+      },
+      {
+        "formatIsPng": true,
+        "dimensionsMatch": true,
+        "unexpectedChunks": [],
+        "failingMaskBoxes": 0,
+        "nonOpaquePixels": 0,
+        "passed": true,
+        "sceneId": "package-benign-contact",
+        "residualSensitiveFindings": 0,
+        "maskedAreaFraction": 0.006591269841269841
+      },
+      {
+        "formatIsPng": true,
+        "dimensionsMatch": true,
+        "unexpectedChunks": [],
+        "failingMaskBoxes": 0,
+        "nonOpaquePixels": 0,
+        "passed": true,
+        "sceneId": "letter-no-answer",
+        "residualSensitiveFindings": 0,
+        "maskedAreaFraction": 0.014940379403794038
+      },
+      {
+        "formatIsPng": true,
+        "dimensionsMatch": true,
+        "unexpectedChunks": [],
+        "failingMaskBoxes": 0,
+        "nonOpaquePixels": 0,
+        "passed": true,
+        "sceneId": "rotated-sticker",
+        "residualSensitiveFindings": 0,
+        "maskedAreaFraction": 0.024744466145833335
+      }
+    ]
+  },
+  "memory": [
+    {
+      "bytes": 22693254,
+      "method": "performance.memory",
+      "at": "before-load"
+    },
+    {
+      "bytes": 267911424,
+      "method": "performance.memory",
+      "at": "after-load"
+    },
+    {
+      "bytes": 71512902,
+      "method": "performance.memory",
+      "at": "after-pilot"
+    }
+  ],
+  "network": {
+    "resources": [
+      {
+        "host": "self",
+        "requests": 40,
+        "transferBytes": 13976157,
+        "decodedBytes": 19228174,
+        "allowed": true
+      },
+      {
+        "host": "huggingface.co",
+        "requests": 7,
+        "transferBytes": 0,
+        "decodedBytes": 0,
+        "allowed": true
+      },
+      {
+        "host": "storage.googleapis.com",
+        "requests": 1,
+        "transferBytes": 0,
+        "decodedBytes": 0,
+        "allowed": true
+      }
+    ],
+    "blockedRequests": [
+      {
+        "host": "odml.pa.googleapis.com",
+        "method": "POST",
+        "reason": "BODY"
+      }
+    ],
+    "cspViolations": []
+  },
+  "notes": [
+    "Dev-server build define reported c1795c9 (captured at server start); the code that ran was commit 3614d05 via hot reload.",
+    "Synthetic pilot only (pilot-scenes@2). Browser pane visible during the run.",
+    "Resource transfer sizes for cross-origin hosts read 0 because those hosts send no Timing-Allow-Origin header; sizes are in the results summary."
+  ]
+}
